@@ -1,14 +1,38 @@
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { ParallaxBg } from "./ParallaxBg";
+
+const freePerks = [
+  "1 hour enhance per day",
+  "Basic studio recording",
+  "Mic Check tool",
+  "Transcription (limited minutes)",
+  "Audiograms (watermarked)",
+  "MP3 export",
+];
+
+const proPerks = [
+  "Unlimited enhance · up to 4hr / day",
+  "Files up to 1GB · video support up to 4K",
+  "Bulk upload & batch processing",
+  "Audiograms — no watermark, custom themes",
+  "Transcript export (TXT / PDF / DOCX)",
+  "Speaker-separated track download",
+  "Royalty-free music library",
+  "All 7 transcription languages",
+  "Auto-dub into 20+ languages",
+  "Priority support",
+];
 
 export function Pricing({ onStart }: { onStart: () => void }) {
   const [yearly, setYearly] = useState(false);
   const price = yearly ? 9.6 : 12;
 
   return (
-    <section className="relative py-28">
-      <div className="max-w-6xl mx-auto px-5 lg:px-8">
+    <section className="relative py-28 overflow-hidden">
+      <ParallaxBg speed={0.5} />
+      <div className="relative max-w-6xl mx-auto px-5 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto">
           <div className="text-xs uppercase tracking-widest text-primary-glow mb-4">Pricing</div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Start free. <span className="text-gradient">Grow unlimited.</span></h2>
@@ -36,9 +60,11 @@ export function Pricing({ onStart }: { onStart: () => void }) {
               <div className="mt-4 text-5xl font-bold">$0<span className="text-base font-normal text-muted-foreground">/mo</span></div>
               <p className="mt-2 text-muted-foreground">For trying things out.</p>
               <ul className="mt-8 space-y-3 text-sm">
-                {["1 hour of enhancement per day", "Basic studio recording", "Mic Check tool", "MP3 export"].map((p) => (
-                  <li key={p} className="flex gap-2"><Check className="h-4 w-4 text-primary-glow mt-0.5" />{p}</li>
+                {freePerks.map((p) => (
+                  <li key={p} className="flex gap-2"><Check className="h-4 w-4 text-primary-glow mt-0.5 shrink-0" />{p}</li>
                 ))}
+                <li className="flex gap-2 text-muted-foreground"><X className="h-4 w-4 mt-0.5 shrink-0" />No video editing or 4K support</li>
+                <li className="flex gap-2 text-muted-foreground"><X className="h-4 w-4 mt-0.5 shrink-0" />No bulk upload</li>
               </ul>
               <button onClick={onStart} className="mt-8 w-full py-3 rounded-full glass border border-white/15 hover:border-primary/60 transition">
                 Start free
@@ -55,15 +81,8 @@ export function Pricing({ onStart }: { onStart: () => void }) {
               <div className="mt-4 text-5xl font-bold">${price.toFixed(yearly ? 2 : 0)}<span className="text-base font-normal text-muted-foreground">/mo</span></div>
               <p className="mt-2 text-muted-foreground">Everything, unlimited.</p>
               <ul className="mt-8 space-y-3 text-sm">
-                {[
-                  "Unlimited enhancement",
-                  "Full video support up to 4K",
-                  "Bulk upload & batch processing",
-                  "All 5 unique AI tools",
-                  "Auto-dub into 20+ languages",
-                  "Priority support",
-                ].map((p) => (
-                  <li key={p} className="flex gap-2"><Check className="h-4 w-4 text-primary-glow mt-0.5" />{p}</li>
+                {proPerks.map((p) => (
+                  <li key={p} className="flex gap-2"><Check className="h-4 w-4 text-primary-glow mt-0.5 shrink-0" />{p}</li>
                 ))}
               </ul>
               <button onClick={onStart} className="mt-8 w-full py-3 rounded-full bg-gradient-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition shadow-glow">

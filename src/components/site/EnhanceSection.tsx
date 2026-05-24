@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { ParallaxBg } from "./ParallaxBg";
 
 const points = [
   "Removes background noise instantly",
@@ -13,8 +14,12 @@ const points = [
 export function EnhanceSection() {
   const [pos, setPos] = useState(50);
   return (
-    <section className="relative py-28">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <section className="relative py-28 overflow-hidden">
+      <ParallaxBg speed={0.5}>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_40%_50%,oklch(0.62_0.21_280/0.18),transparent_55%)]" />
+      </ParallaxBg>
+
+      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
         <Reveal>
           <div className="text-xs uppercase tracking-widest text-primary-glow mb-4">Enhance Speech</div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -42,13 +47,11 @@ export function EnhanceSection() {
               <span>After · Clean</span>
             </div>
             <div className="relative h-44 rounded-2xl overflow-hidden bg-black/40">
-              {/* before noisy */}
               <div className="absolute inset-0 flex items-center gap-[2px] px-4">
                 {Array.from({ length: 80 }).map((_, i) => (
                   <span key={i} className="flex-1 bg-muted-foreground/40 rounded-full" style={{ height: `${20 + Math.random() * 70}%` }} />
                 ))}
               </div>
-              {/* after clean clipped */}
               <div className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${pos}%)` }}>
                 <div className="absolute inset-0 flex items-center gap-[2px] px-4">
                   {Array.from({ length: 80 }).map((_, i) => {
@@ -65,7 +68,6 @@ export function EnhanceSection() {
                   })}
                 </div>
               </div>
-              {/* divider */}
               <div className="absolute top-0 bottom-0 w-px bg-primary-glow shadow-glow" style={{ left: `${pos}%` }}>
                 <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-9 w-9 rounded-full bg-gradient-primary grid place-items-center shadow-glow">
                   <span className="text-xs">⇆</span>
