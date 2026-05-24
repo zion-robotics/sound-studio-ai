@@ -54,12 +54,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SoundAI — Studio-quality audio, instantly" },
+      { title: "SoundAI - AI-powered audio enhancement platform" },
       { name: "description", content: "AI-powered audio tools that make every recording sound studio-grade — right in your browser." },
-      { property: "og:title", content: "SoundAI — Studio-quality audio, instantly" },
+      { property: "og:title", content: "SoundAI - AI-powered audio enhancement platform" },
       { property: "og:description", content: "AI-powered audio tools that make every recording sound studio-grade — right in your browser." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "SoundAI - AI-powered audio enhancement platform" },
+      { name: "twitter:description", content: "AI-powered audio tools that make every recording sound studio-grade — right in your browser." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8f86c49-9d4d-4a58-93af-3c569c9ccb7a/id-preview-b52621af--d994a82c-509d-4a2e-bd38-22f94725edd2.lovable.app-1779629686104.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8f86c49-9d4d-4a58-93af-3c569c9ccb7a/id-preview-b52621af--d994a82c-509d-4a2e-bd38-22f94725edd2.lovable.app-1779629686104.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
