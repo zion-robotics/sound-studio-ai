@@ -1,26 +1,36 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { Hero } from "@/components/site/Hero";
+import { EnhanceSection } from "@/components/site/EnhanceSection";
+import { Features } from "@/components/site/Features";
+import { UniqueFeatures } from "@/components/site/UniqueFeatures";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { SocialProof } from "@/components/site/SocialProof";
+import { Pricing } from "@/components/site/Pricing";
+import { Footer } from "@/components/site/Footer";
+import { AuthModal } from "@/components/site/AuthModal";
+import { ChatWidget } from "@/components/site/ChatWidget";
 
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+export const Route = createFileRoute("/")({ component: Index });
 
 function Index() {
-  return <PlaceholderIndex />;
+  const [authOpen, setAuthOpen] = useState(false);
+  return (
+    <div className="min-h-screen">
+      <Navbar onAuth={() => setAuthOpen(true)} />
+      <main>
+        <Hero onCta={() => setAuthOpen(true)} />
+        <EnhanceSection />
+        <Features />
+        <UniqueFeatures />
+        <HowItWorks />
+        <SocialProof />
+        <Pricing onStart={() => setAuthOpen(true)} />
+      </main>
+      <Footer />
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+      <ChatWidget onRequireAuth={() => setAuthOpen(true)} />
+    </div>
+  );
 }
