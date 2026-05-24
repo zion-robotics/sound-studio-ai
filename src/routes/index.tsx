@@ -4,6 +4,10 @@ import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
 import { EnhanceSection } from "@/components/site/EnhanceSection";
 import { Features } from "@/components/site/Features";
+import { StudioSection } from "@/components/site/StudioSection";
+import { TranscriptionSection } from "@/components/site/TranscriptionSection";
+import { VideoSection } from "@/components/site/VideoSection";
+import { MusicSection } from "@/components/site/MusicSection";
 import { UniqueFeatures } from "@/components/site/UniqueFeatures";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { SocialProof } from "@/components/site/SocialProof";
@@ -23,6 +27,10 @@ function Index() {
         <Hero onCta={() => setAuthOpen(true)} />
         <EnhanceSection />
         <Features />
+        <StudioSection />
+        <TranscriptionSection />
+        <VideoSection />
+        <MusicSection />
         <UniqueFeatures />
         <HowItWorks />
         <SocialProof />

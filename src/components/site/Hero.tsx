@@ -1,13 +1,58 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { ArrowDown, Sparkles, Upload } from "lucide-react";
 import { Particles } from "./Particles";
 import { Waveform } from "./Waveform";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Hero({ onCta }: { onCta: () => void }) {
+  const ref = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 80, damping: 18, mass: 0.6 });
+  const sy = useSpring(my, { stiffness: 80, damping: 18, mass: 0.6 });
+
+  // mouse-driven depth layers
+  const depth = (d: number) => ({
+    x: useTransform(sx, (v) => v * d * 40),
+    y: useTransform(sy, (v) => v * d * 40),
+  });
+  const particleL = depth(0.1);
+  const headlineL = depth(0.15);
+  const ctaL = depth(0.05);
+  const waveL = depth(0.3);
+  const mockupL = depth(0.5);
+  const mockupRotX = useTransform(sy, [-1, 1], [12, 4]);
+  const mockupRotY = useTransform(sx, [-1, 1], [-8, 8]);
+
+  // scroll parallax bg
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 800], [0, 400]);
+
+  function onMove(e: React.MouseEvent) {
+    if (isMobile) return;
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set(((e.clientX - r.left) / r.width - 0.5) * 2);
+    my.set(((e.clientY - r.top) / r.height - 0.5) * 2);
+  }
+
   return (
-    <section className="relative pt-32 pb-24 overflow-hidden">
-      <Particles count={50} />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(0.62_0.21_280/0.35),transparent_60%)] pointer-events-none" />
+    <section
+      ref={ref}
+      onMouseMove={onMove}
+      className="relative pt-32 pb-24 overflow-hidden"
+    >
+      <motion.div
+        style={{ y: bgY, willChange: "transform" }}
+        className="absolute inset-0 -z-10"
+      >
+        <motion.div style={{ x: particleL.x, y: particleL.y, willChange: "transform" }} className="absolute inset-0">
+          <Particles count={50} />
+        </motion.div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(0.62_0.21_280/0.35),transparent_60%)] pointer-events-none" />
+      </motion.div>
 
       <div className="relative max-w-6xl mx-auto px-5 lg:px-8 text-center">
         <motion.div
@@ -21,6 +66,7 @@ export function Hero({ onCta }: { onCta: () => void }) {
         </motion.div>
 
         <motion.h1
+          style={{ x: headlineL.x, y: headlineL.y, willChange: "transform" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
@@ -31,15 +77,17 @@ export function Hero({ onCta }: { onCta: () => void }) {
         </motion.h1>
 
         <motion.p
+          style={{ x: headlineL.x, y: headlineL.y, willChange: "transform" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
           className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
         >
-          AI-powered audio tools that make every recording sound like it was made in a professional studio — right in your browser.
+          Record, enhance, transcribe, edit by text, and export — studio-grade audio and video, all in your browser.
         </motion.p>
 
         <motion.div
+          style={{ x: ctaL.x, y: ctaL.y, willChange: "transform" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -57,13 +105,20 @@ export function Hero({ onCta }: { onCta: () => void }) {
         </motion.div>
 
         <motion.div
+          style={{
+            x: mockupL.x,
+            y: mockupL.y,
+            rotateX: mockupRotX,
+            rotateY: mockupRotY,
+            transformPerspective: 1500,
+            willChange: "transform",
+          }}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mt-16 relative mx-auto max-w-4xl"
-          style={{ perspective: 1500 }}
         >
-          <div className="glass-strong rounded-3xl p-8 shadow-card" style={{ transform: "rotateX(8deg)" }}>
+          <div className="glass-strong rounded-3xl p-8 shadow-card">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
@@ -72,7 +127,9 @@ export function Hero({ onCta }: { onCta: () => void }) {
               </div>
               <span className="text-xs text-muted-foreground">interview-take-3.wav · enhancing</span>
             </div>
-            <Waveform bars={56} />
+            <motion.div style={{ x: waveL.x, willChange: "transform" }}>
+              <Waveform bars={56} />
+            </motion.div>
             <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
               <span>00:02:14</span>
               <span className="px-2 py-1 rounded-full bg-primary/20 text-primary-glow">Noise removed · +12dB clarity</span>
