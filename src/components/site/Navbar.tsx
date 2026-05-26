@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mic, Menu, X, ChevronDown } from "lucide-react";
+import { Mic, Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useTheme } from "@/hooks/use-theme";
+
 
 export function Navbar({ onAuth }: { onAuth: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { theme, toggle } = useTheme();
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -63,6 +67,24 @@ export function Navbar({ onAuth }: { onAuth: () => void }) {
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={toggle}
+            aria-label="Toggle theme"
+            className="h-9 w-9 grid place-items-center rounded-full glass border border-border hover:border-primary/60 transition"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {theme === "dark" ? (
+                <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <Sun className="h-4 w-4" />
+                </motion.span>
+              ) : (
+                <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <Moon className="h-4 w-4" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+
           {user ? (
             <>
               <Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">Dashboard</Link>
@@ -84,7 +106,12 @@ export function Navbar({ onAuth }: { onAuth: () => void }) {
           )}
         </div>
 
-        <button className="md:hidden p-2" onClick={() => setOpen((o) => !o)} aria-label="menu">
+        <div className="md:hidden flex items-center gap-2">
+          <button onClick={toggle} aria-label="Toggle theme" className="p-2">
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+          <button className="p-2" onClick={() => setOpen((o) => !o)} aria-label="menu">
+
           <AnimatePresence mode="wait">
             {open ? (
               <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
@@ -96,7 +123,9 @@ export function Navbar({ onAuth }: { onAuth: () => void }) {
               </motion.span>
             )}
           </AnimatePresence>
-        </button>
+          </button>
+        </div>
+
       </nav>
 
       <AnimatePresence>
