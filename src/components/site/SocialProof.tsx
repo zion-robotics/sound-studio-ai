@@ -1,10 +1,26 @@
 import { Reveal } from "./Reveal";
 
 const testimonials = [
-  { name: "Maya Okafor", role: "Host, The Long Cut", quote: "I cut my edit time in half. The enhancement is genuinely indistinguishable from a real studio booth." },
-  { name: "Daniel Reyes", role: "Indie podcaster", quote: "The smart clip generator gave me three viral TikToks last week. This is the unfair advantage." },
-  { name: "Priya Shankar", role: "Audio producer, Verve FM", quote: "Auto-dub into Hindi and Spanish opened up an audience I'd been trying to reach for two years." },
+  {
+    name: "Maya Okafor",
+    role: "Host, The Long Cut",
+    quote: "I cut my edit time in half. The enhancement is genuinely indistinguishable from a real studio booth.",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces",
+  },
+  {
+    name: "Daniel Reyes",
+    role: "Indie podcaster",
+    quote: "The smart clip generator gave me three viral TikToks last week. This is the unfair advantage.",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
+  },
+  {
+    name: "Priya Shankar",
+    role: "Audio producer, Verve FM",
+    quote: "Auto-dub into Hindi and Spanish opened up an audience I'd been trying to reach for two years.",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=faces",
+  },
 ];
+
 
 export function SocialProof() {
   return (
@@ -24,15 +40,19 @@ export function SocialProof() {
                 <div className="text-5xl text-primary-glow leading-none">"</div>
                 <p className="mt-2 text-foreground/90">{t.quote}</p>
                 <div className="mt-6 flex items-center gap-3">
-                  <div className="h-11 w-11 rounded-full bg-gradient-primary grid place-items-center font-semibold">
-                    {t.name[0]}
-                  </div>
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    loading="lazy"
+                    className="h-11 w-11 rounded-full object-cover border border-border"
+                  />
                   <div>
                     <div className="text-sm font-semibold">{t.name}</div>
                     <div className="text-xs text-muted-foreground">{t.role}</div>
                   </div>
                 </div>
               </div>
+
             </Reveal>
           ))}
         </div>
