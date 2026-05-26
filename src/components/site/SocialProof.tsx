@@ -51,12 +51,8 @@ export function SocialProof() {
                     <div className="text-xs text-muted-foreground">{t.role}</div>
                   </div>
                 </div>
-
-                    <div className="text-sm font-semibold">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
               </div>
+
             </Reveal>
           ))}
         </div>
