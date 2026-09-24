@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
-import { ArrowDown, Sparkles, Upload } from "lucide-react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { ArrowDown, ArrowRight, Play, Sparkles } from "lucide-react";
 import { Particles } from "./Particles";
 import { Waveform } from "./Waveform";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -13,15 +13,15 @@ export function Hero({ onCta }: { onCta: () => void }) {
   const sx = useSpring(mx, { stiffness: 80, damping: 18, mass: 0.6 });
   const sy = useSpring(my, { stiffness: 80, damping: 18, mass: 0.6 });
 
-  const depth = (d: number) => ({
-    x: useTransform(sx, (v) => v * d * 40),
-    y: useTransform(sy, (v) => v * d * 40),
+  const useDepth = (d: number) => ({
+    x: useTransform(sx, (v) => v * d * 120),
+    y: useTransform(sy, (v) => v * d * 120),
   });
-  const particleL = depth(0.1);
-  const headlineL = depth(0.15);
-  const ctaL = depth(0.05);
-  const waveL = depth(0.3);
-  const mockupL = depth(0.5);
+  const particleL = useDepth(0.1);
+  const headlineL = useDepth(0.15);
+  const ctaL = useDepth(0.05);
+  const waveL = useDepth(0.3);
+  const mockupL = useDepth(0.5);
   const mockupRotX = useTransform(sy, [-1, 1], [10, 2]);
   const mockupRotY = useTransform(sx, [-1, 1], [-10, 10]);
 
@@ -40,17 +40,27 @@ export function Hero({ onCta }: { onCta: () => void }) {
     <section
       ref={ref}
       onMouseMove={onMove}
-      className="relative pt-32 pb-24 overflow-hidden"
+      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-16"
     >
-      {/* Background */}
+      {/* Background parallax */}
       <motion.div style={{ y: bgY, willChange: "transform" }} className="absolute inset-0 -z-10">
-        <motion.div style={{ x: particleL.x, y: particleL.y, willChange: "transform" }} className="absolute inset-0">
+        <div className="absolute inset-0 bg-background" />
+        <div
+          className="absolute -top-40 left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full"
+          style={{
+            background: "radial-gradient(circle, oklch(0.62 0.21 280 / 0.18) 0%, transparent 60%)",
+          }}
+        />
+        <motion.div
+          style={{ x: particleL.x, y: particleL.y, willChange: "transform" }}
+          className="absolute inset-0"
+        >
           <Particles count={40} />
         </motion.div>
       </motion.div>
 
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* LEFT — text content */}
+        {/* Text content */}
         <div>
           <motion.div
             style={{ x: headlineL.x, y: headlineL.y, willChange: "transform" }}
@@ -58,18 +68,22 @@ export function Hero({ onCta }: { onCta: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs uppercase tracking-wider">
-              <Sparkles className="h-3.5 w-3.5 text-primary-glow" />
-              Next-gen AI audio studio
+            <span className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground">
+              <Sparkles className="h-3 w-3 text-primary-glow" />
+              New: AI Voice Coach is live
             </span>
 
-            <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
-              Your Voice. <span className="text-gradient">Studio Quality.</span>
-              <br />Instantly.
+            <h1 className="mt-6 mb-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
+              Your voice.
+              <br />
+              <span className="text-gradient">Studio quality.</span>
+              <br />
+              Instantly.
             </h1>
 
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              Record, enhance, transcribe, edit by text, and export — studio-grade audio and video, all in your browser.
+            <p className="mb-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              AI-powered audio tools that make every recording sound like it was made in a
+              professional studio, right in your browser.
             </p>
           </motion.div>
 
@@ -78,16 +92,19 @@ export function Hero({ onCta }: { onCta: () => void }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-8 flex flex-col sm:flex-row gap-3"
+            className="flex flex-wrap gap-3"
           >
             <button
               onClick={onCta}
-              className="pulse-glow px-7 py-3.5 rounded-full bg-gradient-primary text-primary-foreground font-medium hover:scale-105 active:scale-95 transition shadow-glow"
+              className="flex items-center gap-2 rounded-lg bg-gradient-primary px-6 py-3 font-medium text-primary-foreground shadow-glow transition hover:scale-[1.04] active:scale-[.97]"
             >
-              Get started free
+              Get started free <ArrowRight className="h-4 w-4" />
             </button>
-            <button className="px-7 py-3.5 rounded-full glass border border-border hover:border-primary/60 transition flex items-center justify-center gap-2">
-              <Upload className="h-4 w-4" /> Enhance a file
+            <button
+              onClick={onCta}
+              className="flex items-center gap-2 rounded-lg glass px-6 py-3 font-medium transition hover:bg-white/10"
+            >
+              <Play className="h-3.5 w-3.5" /> Enhance a file
             </button>
           </motion.div>
 
@@ -105,7 +122,13 @@ export function Hero({ onCta }: { onCta: () => void }) {
                 "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces",
                 "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces",
               ].map((src, i) => (
-                <img key={i} src={src} alt="Creator" loading="lazy" className="h-9 w-9 rounded-full border-2 border-background object-cover" />
+                <img
+                  key={i}
+                  src={src}
+                  alt="Creator"
+                  loading="lazy"
+                  className="h-9 w-9 rounded-full border-2 border-background object-cover"
+                />
               ))}
             </div>
             <p className="text-sm text-muted-foreground">
@@ -114,7 +137,7 @@ export function Hero({ onCta }: { onCta: () => void }) {
           </motion.div>
         </div>
 
-        {/* RIGHT — mockup */}
+        {/* Audio workspace mockup */}
         <motion.div
           style={{
             x: mockupL.x,
@@ -129,43 +152,36 @@ export function Hero({ onCta }: { onCta: () => void }) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative"
         >
-          {/* Real studio photo behind */}
-          <div className="absolute -top-6 -right-6 w-48 h-48 rounded-2xl overflow-hidden shadow-card hidden md:block">
-            <img
-              src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&h=600&fit=crop"
-              alt="Studio microphone"
-              loading="lazy"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="glass-strong rounded-3xl p-6 md:p-8 shadow-card relative">
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass-strong relative rounded-2xl p-6 shadow-card">
+            <div className="mb-4 flex items-center gap-2">
               <div className="flex gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
               </div>
-              <span className="text-xs text-muted-foreground">interview-take-3.wav · enhancing</span>
+              <span className="ml-2 text-xs text-muted-foreground">interview_final.wav</span>
             </div>
-            <motion.div style={{ x: waveL.x, willChange: "transform" }}>
-              <Waveform bars={48} />
+            <motion.div
+              style={{ x: waveL.x, willChange: "transform" }}
+              className="mb-3 rounded-xl border border-white/5 bg-black/40 p-5"
+            >
+              <Waveform bars={40} />
             </motion.div>
-            <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground gap-2">
+            <div className="mb-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
               <span>00:02:14</span>
-              <span className="px-2 py-1 rounded-full bg-primary/20 text-primary-glow whitespace-nowrap">+12dB clarity</span>
-              <span>00:18:42</span>
+              <span className="text-primary-glow">Enhancing...</span>
+              <span>00:24:08</span>
             </div>
-          </div>
-
-          {/* Floating headphones photo */}
-          <div className="absolute -bottom-8 -left-8 w-40 h-40 rounded-2xl overflow-hidden shadow-card hidden md:block float">
-            <img
-              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop"
-              alt="Headphones"
-              loading="lazy"
-              className="w-full h-full object-cover"
-            />
+            <div className="grid grid-cols-3 gap-2">
+              {["Remove noise", "Strip echo", "Boost voice"].map((label) => (
+                <div
+                  key={label}
+                  className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-center text-xs"
+                >
+                  {label}
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
@@ -173,10 +189,9 @@ export function Hero({ onCta }: { onCta: () => void }) {
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="mt-16 text-muted-foreground flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground"
       >
-        <span className="text-xs uppercase tracking-wider">Scroll</span>
-        <ArrowDown className="h-4 w-4" />
+        <ArrowDown className="h-5 w-5" />
       </motion.div>
     </section>
   );
