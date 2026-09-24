@@ -21,22 +21,26 @@ export const sendChat = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => messageSchema.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
+    const apiKey = process.env.AI_API_KEY;
     if (!apiKey) {
-      return { reply: "AI service is not configured yet. Please add LOVABLE_API_KEY.", error: true };
+      return { reply: "AI service is not configured yet. Please add AI_API_KEY.", error: true };
     }
 
     try {
-      const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...data.messages],
-        }),
-      });
-      if (res.status === 429) return { reply: "Rate limit reached — try again shortly.", error: true };
-      if (res.status === 402) return { reply: "AI credits exhausted. Add credits in Workspace settings.", error: true };
+      const res = await fetch(
+        process.env.AI_API_URL ?? "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: process.env.AI_MODEL ?? "gpt-4o-mini",
+            messages: [{ role: "system", content: SYSTEM_PROMPT }, ...data.messages],
+          }),
+        },
+      );
+      if (res.status === 429)
+        return { reply: "Rate limit reached — try again shortly.", error: true };
+      if (res.status === 402) return { reply: "AI service credits are exhausted.", error: true };
       if (!res.ok) {
         console.error("AI gateway error", res.status, await res.text());
         return { reply: "Something went wrong reaching the AI service.", error: true };

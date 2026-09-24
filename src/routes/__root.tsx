@@ -64,8 +64,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "SoundAI - AI-powered audio enhancement platform" },
       { name: "twitter:description", content: "AI-powered audio tools that make every recording sound studio-grade — right in your browser." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8f86c49-9d4d-4a58-93af-3c569c9ccb7a/id-preview-b52621af--d994a82c-509d-4a2e-bd38-22f94725edd2.lovable.app-1779629686104.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c8f86c49-9d4d-4a58-93af-3c569c9ccb7a/id-preview-b52621af--d994a82c-509d-4a2e-bd38-22f94725edd2.lovable.app-1779629686104.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
